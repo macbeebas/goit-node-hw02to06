@@ -26,7 +26,26 @@ const getContactById = async (contactId) => {
   }
 };
 
-const removeContact = async (contactId) => {};
+const removeContact = async (contactId) => {
+  console.log("TEST removeContact");
+  try {
+    const contactsFile = await fs.readFile(pathContactsFile, "utf-8");
+    const contacts = JSON.parse(contactsFile);
+    const contactIndex = contacts.findIndex(
+      (contact) => contact.id === contactId
+    );
+    if (contactIndex >= 0) {
+      contacts.splice(contactIndex, 1);
+      const newContacts = JSON.stringify(contacts, null, 2);
+      fs.writeFile(pathContactsFile, newContacts, "utf-8");
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    return console.log(error.message);
+  }
+};
 
 const addContact = async (body) => {
   // console.log("TEST addContact"); // is OK

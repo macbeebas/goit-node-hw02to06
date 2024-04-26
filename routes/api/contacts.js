@@ -51,11 +51,18 @@ router.post("/", async (req, res, next) => {
 });
 
 router.delete("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
+  // res.json({ message: "template message after '@ DELETE /api/contacts/:id'" });
+  const { contactId } = req.params;
+  const contactDeleted = await tasks.removeContact(contactId);
+  if (!contactDeleted) {
+    res.status(404).json({ message: "Not found" });
+  } else {
+    res.status(200).json({ message: "Contact deleted" });
+  }
 });
 
 router.put("/:contactId", async (req, res, next) => {
-  res.json({ message: "template message" });
+  res.json({ message: "template message after '@ PUT /api/contacts/:id'" });
 });
 
 module.exports = router;
